@@ -198,7 +198,7 @@
             text-align: center;
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 1s ease 1.5s, transform 1s ease 1.5s; 
+            transition: opacity 1s ease 1.5s, transform 1s ease 1.5s, top 0s, bottom 0s; 
             z-index: 100;
             pointer-events: none;
         }
@@ -250,11 +250,20 @@
             }
             
             .passport-container.is-open .ticket-wrapper {
-                transform: translate(-50%, -200%) scale(2.4);
+                transform: translate(-50%, -200%) scale(2.2);
+                left: 50%;
             }
             
             .rsvp-section {
-                bottom: 20px;
+                position: absolute;
+                bottom: auto;
+                top: 650px;
+                left: 50%;
+                width: 90%;
+            }
+            
+            .passport-container.is-open + .rsvp-section {
+                transform: translateX(-50%);
             }
             
             .rsvp-text {
@@ -279,7 +288,8 @@
             }
             
             .passport-container.is-open .ticket-wrapper {
-                transform: translate(-50%, -220%) scale(2.5);
+                transform: translate(-50%, -220%) scale(2.3);
+                left: 50%;
             }
             
             .passport-title {
@@ -297,6 +307,18 @@
             .click-hint {
                 font-size: 0.7rem;
                 bottom: -40px;
+            }
+            
+            .rsvp-section {
+                position: absolute;
+                bottom: auto;
+                top: 620px;
+                left: 50%;
+                width: 90%;
+            }
+            
+            .passport-container.is-open + .rsvp-section {
+                transform: translateX(-50%);
             }
             
             .rsvp-text {
@@ -324,7 +346,8 @@
             }
             
             .passport-container.is-open .ticket-wrapper {
-                transform: translate(-50%, -230%) scale(2.6);
+                transform: translate(-50%, -230%) scale(2.4);
+                left: 50%;
             }
             
             .passport-title {
@@ -339,6 +362,18 @@
             .passport-footer {
                 font-size: 0.75rem;
                 margin-top: 40px;
+            }
+            
+            .rsvp-section {
+                position: absolute;
+                bottom: auto;
+                top: 580px;
+                left: 50%;
+                width: 90%;
+            }
+            
+            .passport-container.is-open + .rsvp-section {
+                transform: translateX(-50%);
             }
             
             .rsvp-text {
@@ -358,7 +393,20 @@
             }
             
             .passport-container.is-open .ticket-wrapper {
-                transform: translate(-50%, -240%) scale(2.7);
+                transform: translate(-50%, -240%) scale(2.5);
+                left: 50%;
+            }
+            
+            .rsvp-section {
+                position: absolute;
+                bottom: auto;
+                top: 560px;
+                left: 50%;
+                width: 90%;
+            }
+            
+            .passport-container.is-open + .rsvp-section {
+                transform: translateX(-50%);
             }
         }
         
@@ -377,11 +425,20 @@
             }
             
             .passport-container.is-open .ticket-wrapper {
-                transform: translate(-50%, -180%) scale(2.2);
+                transform: translate(-50%, -180%) scale(2.0);
+                left: 50%;
             }
             
             .rsvp-section {
-                bottom: 10px;
+                position: absolute;
+                bottom: auto;
+                top: 480px;
+                left: 50%;
+                width: 90%;
+            }
+            
+            .passport-container.is-open + .rsvp-section {
+                transform: translateX(-50%);
             }
             
             .rsvp-text {
