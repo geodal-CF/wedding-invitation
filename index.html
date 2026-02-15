@@ -118,6 +118,7 @@
             transform: translate(-50%, -130%) scale(1.1); 
             opacity: 1;
             z-index: 50;
+            pointer-events: auto;
         }
 
         /* --- TICKET STYLING --- */
@@ -129,6 +130,10 @@
             overflow: hidden;
             display: grid;
             grid-template-columns: 65px 1fr 60px 280px;
+            
+            /* Default cursor for non-clickable text */
+            cursor: default;
+            
             background-image: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0)), 
                               url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
         }
@@ -155,7 +160,6 @@
         
         .col-barcode { height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; }
         
-        /* Realistic Barcode Mask */
         .barcode-strip {
             width: 40px; 
             height: 90%; 
@@ -169,7 +173,6 @@
         
         .col-stub { padding: 30px; display: flex; flex-direction: column; position: relative; background-color: rgba(0,0,0,0.02); }
         
-        /* Stamp position */
         .stamp-mark { 
             position: absolute; top: 15px; right: 20px; 
             width: 70px; height: 70px; 
@@ -179,11 +182,11 @@
             transform: rotate(-15deg); opacity: 0.6; 
         }
         
-        /* ALIGNMENT FIX */
         .family-list-top { margin-top: 85px; }
 
         .family-list h4 { font-size: 0.65rem; color: var(--accent-color); margin: 0 0 4px 0; text-transform: uppercase; }
         .family-list p { font-size: 0.75rem; color: var(--text-color); margin: 0 0 10px 0; line-height: 1.4; font-weight: 600; text-transform: uppercase; }
+        
         .countdown-container { position: absolute; bottom: 25px; right: 30px; text-align: right; }
         .countdown-label { font-size: 0.55rem; color: var(--accent-color); letter-spacing: 1px; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
         .countdown-timer { font-size: 1rem; font-weight: 700; color: var(--text-color); letter-spacing: 1px; font-variant-numeric: tabular-nums; }
@@ -192,7 +195,7 @@
         .passport-container.is-open .click-hint { opacity: 0; }
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 0.8; } 100% { opacity: 0.4; } }
 
-        /* --- RSVP SECTION (UPDATED) --- */
+        /* --- RSVP SECTION --- */
         .rsvp-section {
             position: fixed;
             bottom: 40px;
@@ -214,7 +217,7 @@
 
         .rsvp-text {
             color: var(--text-color);
-            font-size: 0.9rem; /* Increased size slightly */
+            font-size: 0.9rem;
             letter-spacing: 1px;
             font-weight: 600;
             margin-bottom: 5px;
@@ -254,7 +257,14 @@
                         <div class="info-grid">
                             <div class="info-item"><label>ΗΜΕΡΟΜΗΝΙΑ / DATE</label><span>ΣΑΒΒΑΤΟ 27 ΙΟΥΝΙΟΥ 2026</span></div>
                             <div class="info-item"><label>ΩΡΑ ΠΤΗΣΗΣ / TIME</label><span>19:30</span></div>
-                            <div class="info-item"><label>ΠΡΟΟΡΙΣΜΟΣ / DESTINATION</label><span>ΚΤΗΜΑ ΛΙΑΚΟΣ, ΣΠΑΤΑ</span></div>
+                            <div class="info-item">
+                                <label>ΠΡΟΟΡΙΣΜΟΣ / DESTINATION</label>
+                                <span>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Ktima+Liakos+Spata" target="_blank" style="color: inherit; text-decoration: none; cursor: pointer;">
+                                        ΚΤΗΜΑ ΛΙΑΚΟΣ, ΣΠΑΤΑ
+                                    </a>
+                                </span>
+                            </div>
                         </div>
                         
                         <div class="plane-path">
@@ -279,8 +289,16 @@
                         <div class="family-list family-list-top">
                             <h4>ΟΙΚΟΓΕΝΕΙΕΣ</h4><p>ΦΩΤΕΙΝΗΣ ΔΑΛΕΖΙΟΥ<br>ΒΑΣΙΛΗ & ΚΑΤΕΡΙΝΑΣ ΚΟΣΙΑΒΕΛΟΥ</p>
                         </div>
-                        <div class="family-list"><h4>ΚΟΥΜΠΑΡΟΣ</h4><p>ΜΠΑΜΠΗΣ</p></div>
-                        <div class="family-list"><h4>ΑΚΟΛΟΥΘΕΙ PARTY ΣΤΟΝ ΙΔΙΟ ΧΩΡΟ</h4></div>
+                        <div class="family-list">
+                            <h4>ΚΟΥΜΠΑΡΟΙ</h4>
+                            <p>ΑΛΕΞΑΝΔΡΑ ΠΑΠΠΑ<br>ΧΑΡΑΛΑΜΠΟΣ ΚΑΡΑΓΙΑΝΝΑΚΗΣ</p>
+                        </div>
+                        <div class="family-list">
+                            <h4>ΑΚΟΛΟΥΘΕΙ ΔΕΞΙΩΣΗ ΣΤΟΝ ΙΔΙΟ ΧΩΡΟ</h4>
+                            <p style="text-transform: lowercase; margin-top: 2px;">
+                                <a href="https://www.ktimaliakos.gr" target="_blank" style="color: inherit; text-decoration: none; font-weight: 500;">www.ktimaliakos.gr</a>
+                            </p>
+                        </div>
                         <div class="countdown-container">
                             <div class="countdown-label">TIME TO DEPARTURE</div>
                             <div class="countdown-timer" id="timer">00d 00h 00m 00s</div>
@@ -322,9 +340,9 @@
         
         <div class="rsvp-section">
             <div class="rsvp-text">
-                Παρακαλούμε επιβεβαιώστε την παρουσία σας τηλεφωνικά έως 01/05/2026.<br>
+                Παρακαλούμε επιβεβαιώστε την παρουσία σας τηλεφωνικά έως 31/05/2026.<br>
                 <span style="font-weight: 700; font-size: 1rem; margin-top: 5px; display: inline-block;">
-                    ΓΙΩΡΓΟΣ: 6971811197 &nbsp;&nbsp;&nbsp; ΑΝΑΣΤΑΣΙΑ: 6979851165
+                    ΓΙΩΡΓΟΣ: 6971811197     ΑΝΑΣΤΑΣΙΑ: 6979851165
                 </span>
             </div>
         </div>
