@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Γιώργος & Αναστασία - Save the Date</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -27,18 +27,19 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             perspective: 2500px;
         }
 
         .stage {
             position: relative;
             width: 100%;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10;
+            padding: 20px 0;
         }
 
         /* --- PASSPORT CONTAINER --- */
@@ -219,44 +220,173 @@
         }
 
         /* ========================================= */
-        /* === MOBILE RESPONSIVE SCALING FIX === */
+        /* === MOBILE RESPONSIVE === */
         /* ========================================= */
-        @media (max-width: 950px) {
-            /* Instead of reflowing content (which broke layout),
-               we simply Scale Down the entire container to fit mobile screens.
-               This preserves the exact design and animation you liked.
-            */
-            .passport-container {
-                transform: scale(0.65); /* Shrink initial passport */
-            }
-            
-            .passport-container.is-open {
-                /* When open on mobile, move up slightly and scale down to fit */
-                transform: translateY(-20px) scale(0.7); 
-            }
-
-            /* The ticket is 900px wide. We force it to stay 900px internally,
-               but shrink it visually using transform: scale() to fit in the window. */
+        
+        /* Tablets and smaller laptops */
+        @media (max-width: 1024px) {
             .passport-container.is-open .ticket-wrapper {
-                /* Scale 0.45 makes the 900px ticket approx 405px wide, fitting most phones */
-                transform: translate(-50%, -130%) scale(0.45);
-            }
-            
-            /* Adjust RSVP text size for mobile */
-            .rsvp-text {
-                font-size: 0.75rem;
-                padding: 0 15px;
-            }
-            .rsvp-section {
-                bottom: 20px;
+                transform: translate(-50%, -130%) scale(0.85);
             }
         }
         
-        /* Extra small screens (older phones) */
+        /* Large phones in landscape / small tablets */
+        @media (max-width: 950px) {
+            body {
+                overflow-y: auto;
+            }
+            
+            .stage {
+                min-height: auto;
+                padding: 40px 10px 180px;
+            }
+            
+            .passport-container {
+                transform: scale(0.75);
+            }
+            
+            .passport-container.is-open {
+                transform: translateY(-30px) scale(0.35);
+            }
+            
+            .passport-container.is-open .ticket-wrapper {
+                transform: translate(-50%, -120%) scale(0.48);
+            }
+            
+            .rsvp-section {
+                bottom: 20px;
+            }
+            
+            .rsvp-text {
+                font-size: 0.75rem;
+                padding: 0 20px;
+                line-height: 1.5;
+            }
+        }
+        
+        /* Standard phones */
+        @media (max-width: 480px) {
+            .stage {
+                padding: 30px 5px 160px;
+            }
+            
+            .passport-container {
+                transform: scale(0.65);
+            }
+            
+            .passport-container.is-open {
+                transform: translateY(-20px) scale(0.28);
+            }
+            
+            .passport-container.is-open .ticket-wrapper {
+                transform: translate(-50%, -110%) scale(0.42);
+            }
+            
+            .passport-title {
+                font-size: 2.4rem;
+            }
+            
+            .passport-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .passport-footer {
+                font-size: 0.8rem;
+            }
+            
+            .click-hint {
+                font-size: 0.7rem;
+                bottom: -40px;
+            }
+            
+            .rsvp-text {
+                font-size: 0.7rem;
+                padding: 0 15px;
+            }
+            
+            .rsvp-text br {
+                display: block;
+            }
+        }
+        
+        /* Small phones */
         @media (max-width: 380px) {
-            .passport-container { transform: scale(0.55); }
-            .passport-container.is-open { transform: translateY(-20px) scale(0.6); }
-            .passport-container.is-open .ticket-wrapper { transform: translate(-50%, -130%) scale(0.38); }
+            .stage {
+                padding: 20px 5px 140px;
+            }
+            
+            .passport-container {
+                transform: scale(0.55);
+            }
+            
+            .passport-container.is-open {
+                transform: translateY(-15px) scale(0.25);
+            }
+            
+            .passport-container.is-open .ticket-wrapper {
+                transform: translate(-50%, -100%) scale(0.36);
+            }
+            
+            .passport-title {
+                font-size: 2rem;
+            }
+            
+            .passport-subtitle {
+                font-size: 0.8rem;
+                margin-bottom: 30px;
+            }
+            
+            .passport-footer {
+                font-size: 0.75rem;
+                margin-top: 40px;
+            }
+            
+            .rsvp-text {
+                font-size: 0.65rem;
+                padding: 0 10px;
+            }
+        }
+        
+        /* Extra small phones */
+        @media (max-width: 340px) {
+            .passport-container {
+                transform: scale(0.48);
+            }
+            
+            .passport-container.is-open {
+                transform: translateY(-10px) scale(0.22);
+            }
+            
+            .passport-container.is-open .ticket-wrapper {
+                transform: translate(-50%, -95%) scale(0.32);
+            }
+        }
+        
+        /* Landscape orientation on phones */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .stage {
+                padding: 20px 10px 120px;
+            }
+            
+            .passport-container {
+                transform: scale(0.5);
+            }
+            
+            .passport-container.is-open {
+                transform: translateY(-10px) scale(0.22);
+            }
+            
+            .passport-container.is-open .ticket-wrapper {
+                transform: translate(-50%, -80%) scale(0.35);
+            }
+            
+            .rsvp-section {
+                bottom: 10px;
+            }
+            
+            .rsvp-text {
+                font-size: 0.65rem;
+            }
         }
     </style>
 </head>
@@ -363,9 +493,9 @@
         
         <div class="rsvp-section">
             <div class="rsvp-text">
-                Παρακαλούμε επιβεβαιώστε την παρουσία σας τηλεφωνικά έως 01/05/2026.<br>
+                Παρακαλούμε επιβεβαιώστε την παρουσία σας τηλεφωνικά έως 31/05/2026.<br>
                 <span style="font-weight: 700; font-size: 1rem; margin-top: 5px; display: inline-block;">
-                    ΓΙΩΡΓΟΣ: 6971811197     ΑΝΑΣΤΑΣΙΑ: 6979851165
+                    ΓΙΩΡΓΟΣ: 6971811197     ΑΝΑΣΤΑΣΙΑ: 6979851165
                 </span>
             </div>
         </div>
