@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Γιώργος & Αναστασία - Save the Date</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* --- COLOR PALETTE --- */
+            --bg-color: #e3ddd3; 
+            --passport-color: #9ba69c; 
+            --strip-color: #7d8a7e;
+            --card-bg: #f7f9f7;
+            --text-color: #556157;
+            --accent-color: #8c998d;
+            --barcode-color: #556157;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            perspective: 2500px;
+        }
+
+        .stage {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        /* --- PASSPORT CONTAINER --- */
+        .passport-container {
+            position: relative;
+            width: 420px;
+            height: 580px;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 20;
+        }
+        
+        .passport-container:not(.is-open):hover {
+            transform: translateY(-10px) rotateX(5deg);
+        }
+
+        .passport-container.is-open {
+            transform: translateY(-60px) scale(0.9);
+            pointer-events: none;
+        }
+
+        /* --- COVERS --- */
+        .back-cover {
+            position: absolute; width: 100%; height: 100%;
+            background-color: var(--strip-color);
+            border-radius: 15px 25px 25px 15px;
+            box-shadow: 10px 20px 50px rgba(0,0,0,0.25);
+            z-index: 1;
+            transition: opacity 1s ease 0.5s;
+        }
+        .passport-container.is-open .back-cover { opacity: 0.5; }
+
+        .front-cover {
+            position: absolute; width: 100%; height: 100%;
+            background-color: var(--passport-color); 
+            border-radius: 15px 25px 25px 15px;
+            transform-origin: left center; 
+            z-index: 20;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; 
+            backface-visibility: hidden;
+            background-image: radial-gradient(circle at center, rgba(0,0,0,0.02) 0%, transparent 60%),
+                              url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+            box-shadow: inset 5px 0 15px rgba(0,0,0,0.1); 
+            transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease 0.8s;
+        }
+
+        .passport-container.is-open .front-cover {
+            transform: rotateY(-140deg);
+            opacity: 0.3;
+        }
+
+        .passport-title, .passport-subtitle, .passport-footer {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(45deg, #b88a44, #e6c67a, #b88a44);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            text-shadow: 0px 1px 1px rgba(255,255,255,0.4);
+            pointer-events: none;
+        }
+        .passport-title { font-size: 2.8rem; letter-spacing: 2px; margin-bottom: 5px; }
+        .passport-subtitle { letter-spacing: 3px; text-transform: uppercase; font-size: 1rem; margin-bottom: 40px; }
+        .passport-footer { letter-spacing: 3px; text-transform: uppercase; font-size: 0.9rem; margin-top: 50px; }
+
+        /* --- TICKET WRAPPER --- */
+        .ticket-wrapper {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+            width: 900px; height: 360px;
+            z-index: 5; opacity: 0;
+            transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition-delay: 0.4s;
+        }
+
+        .passport-container.is-open .ticket-wrapper {
+            transform: translate(-50%, -130%) scale(1.1); 
+            opacity: 1;
+            z-index: 50;
+        }
+
+        /* --- TICKET STYLING --- */
+        .ticket {
+            width: 100%; height: 100%;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 65px 1fr 60px 280px;
+            background-image: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0)), 
+                              url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        }
+
+        .col-left { background-color: var(--strip-color); display: flex; align-items: center; justify-content: center; border-right: 1px solid rgba(0,0,0,0.05); }
+        .vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); color: #f7f9f7; font-weight: 700; letter-spacing: 4px; font-size: 1.2rem; white-space: nowrap; opacity: 0.95; }
+
+        .col-main { 
+            padding: 30px 40px 15px 40px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative;
+            background-image: linear-gradient(rgba(247, 249, 247, 0.85), rgba(247, 249, 247, 0.85)),
+                              url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1200px-World_map_-_low_resolution.svg.png');
+            background-size: cover; background-position: center;
+        }
+        
+        .script-text { font-family: 'Great Vibes', cursive; color: var(--text-color); font-size: 2.6rem; line-height: 1.1; position: relative; z-index: 2; }
+        .sub-text { font-family: 'Great Vibes', cursive; color: var(--text-color); font-size: 2rem; margin-left: 20px; position: relative; z-index: 2; }
+        .info-grid { display: grid; grid-template-rows: repeat(3, 1fr); gap: 12px; margin-top: 10px; position: relative; z-index: 2; }
+        .info-item label { display: block; font-size: 0.65rem; color: var(--accent-color); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .info-item span { display: block; font-size: 0.9rem; color: var(--text-color); font-weight: 600; }
+        .plane-path { margin-top: 5px; width: 100%; height: 40px; position: relative; z-index: 2; }
+        .bottom-msg { font-size: 0.65rem; font-weight: 700; color: var(--accent-color); letter-spacing: 1.5px; margin-top: auto; padding-top: 10px; position: relative; z-index: 2; }
+        
+        .col-barcode { height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; }
+        
+        /* Realistic Barcode Mask */
+        .barcode-strip {
+            width: 40px; 
+            height: 90%; 
+            background-color: var(--barcode-color); 
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='100' viewBox='0 0 40 100' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='4' height='100'/%3E%3Crect x='6' y='0' width='2' height='100'/%3E%3Crect x='10' y='0' width='1' height='100'/%3E%3Crect x='12' y='0' width='3' height='100'/%3E%3Crect x='18' y='0' width='1' height='100'/%3E%3Crect x='20' y='0' width='4' height='100'/%3E%3Crect x='26' y='0' width='2' height='100'/%3E%3Crect x='30' y='0' width='1' height='100'/%3E%3Crect x='32' y='0' width='3' height='100'/%3E%3Crect x='36' y='0' width='2' height='100'/%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='100' viewBox='0 0 40 100' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='4' height='100'/%3E%3Crect x='6' y='0' width='2' height='100'/%3E%3Crect x='10' y='0' width='1' height='100'/%3E%3Crect x='12' y='0' width='3' height='100'/%3E%3Crect x='18' y='0' width='1' height='100'/%3E%3Crect x='20' y='0' width='4' height='100'/%3E%3Crect x='26' y='0' width='2' height='100'/%3E%3Crect x='30' y='0' width='1' height='100'/%3E%3Crect x='32' y='0' width='3' height='100'/%3E%3Crect x='36' y='0' width='2' height='100'/%3E%3C/svg%3E");
+            -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+            opacity: 0.8;
+        }
+        
+        .col-stub { padding: 30px; display: flex; flex-direction: column; position: relative; background-color: rgba(0,0,0,0.02); }
+        
+        /* Stamp position */
+        .stamp-mark { 
+            position: absolute; top: 15px; right: 20px; 
+            width: 70px; height: 70px; 
+            border: 2px solid var(--text-color); border-radius: 50%; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            font-size: 0.5rem; font-weight: 700; color: var(--text-color); 
+            transform: rotate(-15deg); opacity: 0.6; 
+        }
+        
+        /* ALIGNMENT FIX */
+        .family-list-top { margin-top: 85px; }
+
+        .family-list h4 { font-size: 0.65rem; color: var(--accent-color); margin: 0 0 4px 0; text-transform: uppercase; }
+        .family-list p { font-size: 0.75rem; color: var(--text-color); margin: 0 0 10px 0; line-height: 1.4; font-weight: 600; text-transform: uppercase; }
+        .countdown-container { position: absolute; bottom: 25px; right: 30px; text-align: right; }
+        .countdown-label { font-size: 0.55rem; color: var(--accent-color); letter-spacing: 1px; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+        .countdown-timer { font-size: 1rem; font-weight: 700; color: var(--text-color); letter-spacing: 1px; font-variant-numeric: tabular-nums; }
+
+        .click-hint { position: absolute; bottom: -50px; width: 100%; text-align: center; color: #556157; font-size: 0.8rem; letter-spacing: 2px; opacity: 0.6; transition: opacity 0.5s; animation: pulse 2s infinite; font-weight: 600; }
+        .passport-container.is-open .click-hint { opacity: 0; }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 0.8; } 100% { opacity: 0.4; } }
+
+        /* --- RSVP SECTION (UPDATED) --- */
+        .rsvp-section {
+            position: fixed;
+            bottom: 40px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease 1.5s, transform 1s ease 1.5s; 
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .passport-container.is-open + .rsvp-section {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .rsvp-text {
+            color: var(--text-color);
+            font-size: 0.9rem; /* Increased size slightly */
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 950px) {
+            .ticket-wrapper { width: 95%; height: auto; transform: translate(-50%, -50%) scale(0.4); }
+            .passport-container.is-open .ticket-wrapper { transform: translate(-50%, -100%) scale(0.9); }
+            .ticket { grid-template-columns: 50px 1fr; grid-template-rows: auto auto auto; }
+            .col-barcode { display: none; }
+            .col-stub { border-top: 2px dashed #ccc; }
+            .rsvp-section { bottom: 20px; padding: 0 10px; box-sizing: border-box; }
+            .rsvp-text { font-size: 0.75rem; }
+            .passport-container.is-open { transform: translateY(-30px) scale(0.9); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stage">
+        
+        <div class="passport-container" id="passport" onclick="toggleOpen()">
+            
+            <div class="back-cover"></div>
+            
+            <div class="ticket-wrapper">
+                <div class="ticket">
+                    <div class="col-left"><span class="vertical-text">ΓΙΩΡΓΟΣ & ΑΝΑΣΤΑΣΙΑ</span></div>
+                    
+                    <div class="col-main">
+                        <div class="header-group">
+                            <div class="script-text">We are getting married</div>
+                            <div class="sub-text">Save the Date!</div>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item"><label>ΗΜΕΡΟΜΗΝΙΑ / DATE</label><span>ΣΑΒΒΑΤΟ 27 ΙΟΥΝΙΟΥ 2026</span></div>
+                            <div class="info-item"><label>ΩΡΑ ΠΤΗΣΗΣ / TIME</label><span>19:30</span></div>
+                            <div class="info-item"><label>ΠΡΟΟΡΙΣΜΟΣ / DESTINATION</label><span>ΚΤΗΜΑ ΛΙΑΚΟΣ, ΣΠΑΤΑ</span></div>
+                        </div>
+                        
+                        <div class="plane-path">
+                            <svg viewBox="0 0 200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10,25 Q50,5 100,25 T178,25" fill="none" stroke="#7d8a7e" stroke-width="1.5" stroke-dasharray="4,4"/>
+                                <g transform="translate(178, 25) rotate(-10) scale(0.8)">
+                                    <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" 
+                                          fill="#556157" 
+                                          transform="translate(-12, -12) rotate(90, 12, 12)"/>
+                                </g>
+                                <text x="100" y="20" text-anchor="middle" fill="#556157" font-size="12">♥</text>
+                            </svg>
+                        </div>
+                        <div class="bottom-msg">COME AND TAKE OFF WITH US INTO OUR MARRIAGE!</div>
+                    </div>
+                    
+                    <div class="col-barcode"><div class="barcode-strip"></div></div>
+                    
+                    <div class="col-stub">
+                        <div class="stamp-mark"><span>27</span><span style="font-size:14px">♥</span><span>JUN</span></div>
+                        
+                        <div class="family-list family-list-top">
+                            <h4>ΟΙΚΟΓΕΝΕΙΕΣ</h4><p>ΦΩΤΕΙΝΗΣ ΔΑΛΕΖΙΟΥ<br>ΒΑΣΙΛΗ & ΚΑΤΕΡΙΝΑΣ ΚΟΣΙΑΒΕΛΟΥ</p>
+                        </div>
+                        <div class="family-list"><h4>ΚΟΥΜΠΑΡΟΣ</h4><p>ΜΠΑΜΠΗΣ</p></div>
+                        <div class="family-list"><h4>ΑΚΟΛΟΥΘΕΙ PARTY ΣΤΟΝ ΙΔΙΟ ΧΩΡΟ</h4></div>
+                        <div class="countdown-container">
+                            <div class="countdown-label">TIME TO DEPARTURE</div>
+                            <div class="countdown-timer" id="timer">00d 00h 00m 00s</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="front-cover">
+                <div class="passport-title">PASSPORT</div>
+                <div class="passport-subtitle">WEDDING INVITATION</div>
+                
+                <div style="width: 180px; height: 180px; margin: 20px 0; opacity: 0.9;">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="gold-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#b88a44" />
+                                <stop offset="50%" stop-color="#e6c67a" />
+                                <stop offset="100%" stop-color="#b88a44" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="50" cy="50" r="45" stroke="url(#gold-gradient)" stroke-width="0.8" stroke-dasharray="2 2" />
+                        <circle cx="50" cy="50" r="35" stroke="url(#gold-gradient)" stroke-width="0.5" />
+                        <path d="M50 10 L55 45 L90 50 L55 55 L50 90 L45 55 L10 50 L45 45 Z" fill="none" stroke="url(#gold-gradient)" stroke-width="0.8"/>
+                        <path d="M50 10 L50 90 M10 50 L90 50" stroke="url(#gold-gradient)" stroke-width="0.5"/>
+                        <path d="M50 25 L53 47 L75 50 L53 53 L50 75 L47 53 L25 50 L47 47 Z" fill="url(#gold-gradient)" opacity="0.3"/>
+                        <text x="50" y="8" text-anchor="middle" fill="url(#gold-gradient)" font-size="5" font-family="serif">♥</text>
+                        <text x="50" y="98" text-anchor="middle" fill="url(#gold-gradient)" font-size="5" font-family="serif">✈</text>
+                        <text x="4" y="52" text-anchor="middle" fill="url(#gold-gradient)" font-size="6" font-family="serif">W</text>
+                        <text x="96" y="52" text-anchor="middle" fill="url(#gold-gradient)" font-size="6" font-family="serif">E</text>
+                    </svg>
+                </div>
+                <div class="passport-footer">YOU ARE INVITED</div>
+                
+                <div class="click-hint">CLICK TO OPEN</div>
+            </div>
+            
+        </div>
+        
+        <div class="rsvp-section">
+            <div class="rsvp-text">
+                Παρακαλούμε επιβεβαιώστε την παρουσία σας τηλεφωνικά έως 01/05/2026.<br>
+                <span style="font-weight: 700; font-size: 1rem; margin-top: 5px; display: inline-block;">
+                    ΓΙΩΡΓΟΣ: 6971811197 &nbsp;&nbsp;&nbsp; ΑΝΑΣΤΑΣΙΑ: 6979851165
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleOpen() {
+            const passport = document.getElementById('passport');
+            passport.classList.add('is-open');
+        }
+
+        const countDownDate = new Date("2026-06-27T19:30:00+02:00").getTime();
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "WE ARE MARRIED!";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
